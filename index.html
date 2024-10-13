@@ -27,7 +27,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             width: 100%;
-            max-width: 600px; /* Reduced max-width for better mobile display */
+            max-width: 600px;
             padding: 20px;
         }
 
@@ -38,7 +38,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            text-align: center; /* Center text for better alignment on mobile */
+            text-align: center;
         }
 
         .card:hover {
@@ -65,21 +65,21 @@
         }
 
         .progress-circle {
-            width: 80px; /* Smaller circle for mobile */
-            height: 80px; /* Smaller circle for mobile */
+            width: 80px;
+            height: 80px;
             background: conic-gradient(#fff 0%, #6dd5ed 75%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            margin: 0 auto; /* Center the progress circle */
+            margin: 0 auto;
         }
 
         .progress-circle::before {
             content: "";
-            width: 60px; /* Smaller inner circle for mobile */
-            height: 60px; /* Smaller inner circle for mobile */
+            width: 60px;
+            height: 60px;
             background-color: #2193b0;
             border-radius: 50%;
             position: absolute;
@@ -89,9 +89,33 @@
         }
 
         .progress-percentage {
-            font-size: 1.2em; /* Smaller font size for mobile */
+            font-size: 1.2em;
             position: relative;
             z-index: 1;
+        }
+
+        /* Top Up Bar */
+        .top-up-bar {
+            display: none; /* Hidden initially */
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            z-index: 10;
+            animation: slideDown 0.5s ease forwards; /* Add animation */
+        }
+
+        @keyframes slideDown {
+            from {
+                top: -100px; /* Start above the viewport */
+            }
+            to {
+                top: 20px; /* End position */
+            }
         }
 
         /* Modal for Fall Detection */
@@ -99,7 +123,7 @@
             display: none;
             position: fixed;
             z-index: 1;
-            padding-top: 100px; /* Adjusted padding for mobile */
+            padding-top: 100px;
             left: 0;
             top: 0;
             width: 100%;
@@ -110,9 +134,9 @@
         .modal-content {
             background-color: white;
             margin: auto;
-            padding: 20px; /* Reduced padding for mobile */
+            padding: 20px;
             border-radius: 10px;
-            width: 80%; /* Responsive width for modal */
+            width: 80%;
             max-width: 400px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -131,7 +155,7 @@
         }
 
         .modal-message {
-            font-size: 1.5em; /* Smaller font size for mobile */
+            font-size: 1.5em;
             color: #e74c3c;
             margin-bottom: 20px;
         }
@@ -139,10 +163,10 @@
         .modal-button {
             background-color: #2193b0;
             color: white;
-            padding: 10px 20px; /* Smaller padding for mobile */
+            padding: 10px 20px;
             border: none;
             border-radius: 8px;
-            font-size: 1em; /* Smaller font size for mobile */
+            font-size: 1em;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -185,6 +209,8 @@
 </head>
 
 <body>
+
+    <div class="top-up-bar" id="top-up-bar">Fall detection status refreshed!</div>
 
     <div class="dashboard">
         <!-- Step Counter Card -->
@@ -248,15 +274,13 @@
             if (fallDetected) {
                 document.getElementById('fall-status').innerText = "Fall detected!";
                 document.getElementById('refresh-status').style.display = 'inline'; // Show refresh icon
-                showFallModal();
+                document.getElementById("fallModal").style.display = "block"; // Show modal
+                document.getElementById("top-up-bar").style.display = 'none'; // Hide top-up bar on fall detected
             } else {
                 document.getElementById('fall-status').innerText = "No fall detected";
                 document.getElementById('refresh-status').style.display = 'none'; // Hide refresh icon
+                document.getElementById("top-up-bar").style.display = 'none'; // Hide top-up bar
             }
-        }
-
-        function showFallModal() {
-            document.getElementById("fallModal").style.display = "block";
         }
 
         const closeModalBtn = document.getElementById("closeModalBtn");
@@ -274,6 +298,10 @@
             // Simulate refresh action
             const fallDetected = Math.random() < 0.5; // Randomly determine fall detection status
             handleFallDetection(fallDetected);
+            document.getElementById("top-up-bar").style.display = 'block'; // Show top-up bar
+            setTimeout(() => {
+                document.getElementById("top-up-bar").style.display = 'none'; // Hide after 3 seconds
+            }, 3000);
         };
     </script>
 </body>
